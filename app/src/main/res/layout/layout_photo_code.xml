@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="6dp"
+    android:background="@drawable/bg_photo_code_gradient">
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_verified"
+        app:tint="#000000" />
+
+    <TextView
+        android:id="@+id/tvPhotoCode"
+        android:text=" Photo Code: PTXXXXXXXX"
+        android:textColor="#252323"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_reguler"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+</LinearLayout>
