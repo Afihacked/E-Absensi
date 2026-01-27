@@ -27,6 +27,7 @@ import com.afitech.absensi.databinding.FragmentHomeBinding
 import com.afitech.absensi.ui.history.AbsensiAdapter
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
@@ -118,6 +119,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             adapter = historyAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            findNavController().navigate(R.id.loginFragment)
+            return
+        }
 
         loadSettings()
         requestLocationIfNeeded()
@@ -179,15 +185,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun updateUserNameUI() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        val profileName =
-            firebaseUser?.displayName
-                ?.takeIf { it.isNotBlank() }
-                ?: "Pengguna"
-
-        binding.tvUserName.text = profileName
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener {
+                val nama = it.getString("nama") ?: "User"
+                binding.tvUserName.text = nama
+            }
     }
+
 
 
     // ================= GPS =================
@@ -269,7 +278,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun updateInfoAbsensiUI() {
 
         val s = userSettings
-        val nama = s?.namaDisplay ?: "Nama User"
+        val nama = s?.namaDisplay ?: "Anda Siapa ?"
         val alamatCustom = s?.lokasiDefault
 
         val alamat =

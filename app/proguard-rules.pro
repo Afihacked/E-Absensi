@@ -1,21 +1,73 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+#################################################
+## 🔐 FIREBASE
+#################################################
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Firestore model
+-keepclassmembers class * {
+    @com.google.firebase.firestore.PropertyName <methods>;
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes *Annotation*
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Firebase Auth
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+#################################################
+## 🧭 ANDROIDX NAVIGATION (SafeArgs)
+#################################################
+
+-keep class androidx.navigation.** { *; }
+-keepclassmembers class * implements androidx.navigation.NavDirections { *; }
+
+#################################################
+## 📦 DATA MODELS (WAJIB utk Firestore parsing)
+#################################################
+
+-keep class com.afitech.absensi.data.model.** { *; }
+
+#################################################
+## 📍 GOOGLE LOCATION & PLACES
+#################################################
+
+-keep class com.google.android.gms.location.** { *; }
+-keep class com.google.android.libraries.places.** { *; }
+-dontwarn com.google.android.gms.**
+-dontwarn com.google.android.libraries.places.**
+
+#################################################
+## 🖼 EXIF
+#################################################
+
+-keep class androidx.exifinterface.** { *; }
+
+#################################################
+## 🔥 VIEWBINDING (BIAR TIDAK ERROR)
+#################################################
+
+-keep class **Binding { *; }
+
+#################################################
+## 🧱 KOTLIN (IMPORTANT)
+#################################################
+
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
+
+#################################################
+## 🛠 GENERAL ANDROID SAFE RULES
+#################################################
+
+-keepclassmembers class * extends android.app.Activity { *; }
+-keepclassmembers class * extends androidx.fragment.app.Fragment { *; }
+-keepclassmembers class * extends android.view.View { *; }
+
+#################################################
+## 🔥 REMOVE LOGS IN RELEASE
+#################################################
+
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}

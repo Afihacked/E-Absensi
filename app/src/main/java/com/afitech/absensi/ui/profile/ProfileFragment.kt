@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.UserRepository
-import com.afitech.absensi.data.model.UserProfile
 import com.afitech.absensi.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -17,16 +17,33 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
+        binding.btnLogout.setOnClickListener {
+
+            FirebaseAuth.getInstance().signOut()
+
+            Toast.makeText(
+                requireContext(),
+                "Berhasil logout",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // 🚨 HAPUS SEMUA BACKSTACK
+            findNavController().navigate(
+                R.id.loginFragment,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_graph, true) // 🔥 HAPUS TOTAL STACK
+                    .build()
+            )
+        }
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        // load profile
-        UserRepository.getProfile(
-            uid = uid,
+        // 🔥 LOAD NAMA DARI FIRESTORE
+        UserRepository.getUser(
+            uid,
             onSuccess = { profile ->
-                profile?.let {
-                    binding.etNama.setText(it.nama)
-                }
+                binding.etNama.setText(profile?.nama ?: "")
             },
             onError = {}
         )
@@ -39,26 +56,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@setOnClickListener
             }
 
-            val profile = UserProfile(
-                uid = uid,
-                nama = nama
-            )
-
-            UserRepository.saveOrUpdateProfile(
-                profile,
+            // 🔥 UPDATE NAMA
+            UserRepository.updateNama(
+                uid,
+                nama,
                 onSuccess = {
-                    Toast.makeText(
-                        requireContext(),
-                        "Profil disimpan",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Profil disimpan", Toast.LENGTH_SHORT).show()
                 },
                 onError = {
-                    Toast.makeText(
-                        requireContext(),
-                        "Gagal menyimpan profil",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(requireContext(), "Gagal menyimpan profil", Toast.LENGTH_LONG).show()
                 }
             )
         }

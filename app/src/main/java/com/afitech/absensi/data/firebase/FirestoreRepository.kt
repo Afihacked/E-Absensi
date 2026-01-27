@@ -2,6 +2,7 @@ package com.afitech.absensi.data.firebase
 
 import android.util.Log
 import com.afitech.absensi.data.model.Absensi
+import com.afitech.absensi.data.model.UserProfile
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration

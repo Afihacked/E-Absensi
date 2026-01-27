@@ -10,7 +10,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:text="E-Absen Outsourching"
+        android:text="E-Absensi"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"

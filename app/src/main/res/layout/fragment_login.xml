@@ -24,8 +24,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Email"
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="58dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,9 +35,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Password"
+                android:id="@+id/etPassword"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="58dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -51,6 +53,15 @@
             android:text="Daftar Akun"
             android:textColor="@color/primary"
             android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/btnForgot"
+            android:text="Lupa Password?"
+            android:textColor="@color/primary"
+            android:layout_marginTop="12dp"
             android:clickable="true"
             android:focusable="true"
             android:layout_width="wrap_content"
