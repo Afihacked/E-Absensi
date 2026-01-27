@@ -1,5 +1,6 @@
 package com.afitech.absensi.data.firebase
 
+import android.util.Log
 import com.afitech.absensi.data.model.UserSettings
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,6 +26,7 @@ object SettingsRepository {
                 }
             }
             .addOnFailureListener { e ->
+                Log.e("SETTINGS_SAVE", "ERROR", e)
                 onError(e)
             }
     }

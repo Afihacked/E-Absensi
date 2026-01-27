@@ -278,7 +278,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun updateInfoAbsensiUI() {
 
         val s = userSettings
-        val nama = s?.namaDisplay ?: "Anda Siapa ?"
+        val nama = s?.namaDisplay ?: "Nama User"
         val alamatCustom = s?.lokasiDefault
 
         val alamat =
@@ -418,16 +418,45 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     // ================= PREVIEW =================
     private fun showPreview(uri: Uri) {
 
+        // ================= 🔒 CEK SUDAH ADA PHOTOCODE =================
+        val existingCode = extractPhotoCodeFromExif(uri)
+
+        if (existingCode != null) {
+            Toast.makeText(
+                requireContext(),
+                "❌ Foto ini sudah mengandung absensi Afitech",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        // ================= 🔒 CEK DUPLIKAT HASH =================
         val originalBitmap = getBitmapFromUri(uri)
+        val tempHash = generateImageHash(originalBitmap)
 
-        // 🔐 GENERATE SEKALI SAJA
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        FirestoreRepository.checkDuplicateAbsensi(uid, tempHash) { isDuplicate, _ ->
+
+            if (isDuplicate) {
+                Toast.makeText(
+                    requireContext(),
+                    "❌ Foto ini sudah pernah digunakan",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@checkDuplicateAbsensi
+            }
+
+            // ✅ FOTO AMAN → LANJUT WATERMARK
+            continuePreviewProcess(originalBitmap, tempHash)
+        }
+    }
+    private fun continuePreviewProcess(originalBitmap: Bitmap, hash: String) {
+
+        currentImageHash = hash
         currentPhotoCode = generatePhotoCode()
-        currentImageHash = generateImageHash(originalBitmap)
 
-        Log.d(
-            "FASE3",
-            "PREVIEW hash=${currentImageHash?.take(10)} code=$currentPhotoCode"
-        )
+        Log.d("FASE3", "PREVIEW hash=${hash.take(10)} code=$currentPhotoCode")
 
         var bitmap = addWatermarkFromXml(originalBitmap)
         bitmap = drawVerifiedVertical(bitmap)
@@ -437,7 +466,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.imgPreview.setImageBitmap(previewBitmap)
         binding.cardPreview.visibility = View.VISIBLE
-
         binding.btnCamera.visibility = View.GONE
         binding.btnGallery.visibility = View.GONE
         binding.tvNote.visibility = View.GONE
@@ -445,8 +473,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         hideHistoryAll()
     }
 
-
-
+    private fun extractPhotoCodeFromExif(uri: Uri): String? {
+        return try {
+            requireContext().contentResolver.openInputStream(uri)?.use {
+                val exif = androidx.exifinterface.media.ExifInterface(it)
+                val comment = exif.getAttribute(
+                    androidx.exifinterface.media.ExifInterface.TAG_USER_COMMENT
+                )
+                if (comment?.startsWith("AFITECH_ABSENSI|") == true) {
+                    comment.removePrefix("AFITECH_ABSENSI|")
+                } else null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
     private fun clearPreview() {
         binding.cardPreview.visibility = View.GONE
         binding.btnCamera.visibility = View.VISIBLE

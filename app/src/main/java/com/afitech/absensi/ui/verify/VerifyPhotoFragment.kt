@@ -53,11 +53,14 @@ class VerifyPhotoFragment : Fragment(R.layout.fragment_verify_photo) {
                 .openInputStream(uri)
                 ?.use {
                     val exif = androidx.exifinterface.media.ExifInterface(it)
-                    val comment = exif.getAttribute(
+                    var comment = exif.getAttribute(
                         androidx.exifinterface.media.ExifInterface.TAG_USER_COMMENT
-                    )
+                    ) ?: return null
 
-                    if (comment?.startsWith("AFITECH_ABSENSI|") == true) {
+                    // 🔥 BERSIHKAN KARAKTER ANEH
+                    comment = comment.trim().replace("\"", "")
+
+                    if (comment.startsWith("AFITECH_ABSENSI|")) {
                         comment.removePrefix("AFITECH_ABSENSI|")
                     } else null
                 }
