@@ -19,12 +19,11 @@ class AbsensiAdapter :
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Absensi>() {
 
-            // identitas item (stabil untuk realtime)
+            // Identitas item realtime
             override fun areItemsTheSame(oldItem: Absensi, newItem: Absensi): Boolean {
                 return oldItem.createdAt == newItem.createdAt
             }
 
-            // isi item berubah atau tidak
             override fun areContentsTheSame(oldItem: Absensi, newItem: Absensi): Boolean {
                 return oldItem == newItem
             }
@@ -57,12 +56,11 @@ class AbsensiAdapter :
     }
 
     // ===============================
-    // FORMAT WAKTU MANUSIAWI
+    // FORMAT WAKTU MANUSIAWI (TIMESTAMP)
     // ===============================
-    private fun formatWaktu(createdAt: Long): String {
-        if (createdAt <= 0L) return "-"
+    private fun formatWaktu(timestamp: Timestamp?): String {
+        val date: Date = timestamp?.toDate() ?: return "-"
 
-        val date = Date(createdAt)
         val calItem = Calendar.getInstance().apply { time = date }
         val calNow = Calendar.getInstance()
 
@@ -89,7 +87,7 @@ class AbsensiAdapter :
     private fun isYesterday(a: Calendar, b: Calendar): Boolean {
         b.add(Calendar.DAY_OF_YEAR, -1)
         val result = isSameDay(a, b)
-        b.add(Calendar.DAY_OF_YEAR, +1) // restore
+        b.add(Calendar.DAY_OF_YEAR, +1)
         return result
     }
 }

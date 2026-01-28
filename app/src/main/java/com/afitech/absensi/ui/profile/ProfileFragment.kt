@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.UserRepository
 import com.afitech.absensi.databinding.FragmentProfileBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var googleSignInClient: com.google.android.gms.auth.api.signin.GoogleSignInClient
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,23 +23,24 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.btnLogout.setOnClickListener {
 
             FirebaseAuth.getInstance().signOut()
+            googleSignInClient.signOut()        // logout biasa
+            googleSignInClient.revokeAccess()   // paksa pilih akun lagi
 
-            Toast.makeText(
-                requireContext(),
-                "Berhasil logout",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "Berhasil logout", Toast.LENGTH_SHORT).show()
 
-            // 🚨 HAPUS SEMUA BACKSTACK
             findNavController().navigate(
                 R.id.loginFragment,
                 null,
                 androidx.navigation.NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_graph, true) // 🔥 HAPUS TOTAL STACK
+                    .setPopUpTo(R.id.nav_graph, true)
                     .build()
             )
         }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
 
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         // 🔥 LOAD NAMA DARI FIRESTORE

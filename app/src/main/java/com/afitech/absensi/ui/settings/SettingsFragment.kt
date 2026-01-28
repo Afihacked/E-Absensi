@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.SettingsRepository
 import com.afitech.absensi.data.model.UserSettings
 import com.afitech.absensi.databinding.FragmentSettingsBinding
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -31,7 +33,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding = FragmentSettingsBinding.bind(view)
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
+        ensureDefaultName(uid)
         // 🔥 WAJIB: tampilkan tombol (XML default = gone)
         binding.btnTanggal.visibility = View.VISIBLE
         binding.btnWaktu.visibility = View.VISIBLE
@@ -86,92 +88,169 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         // ===== SIMPAN =====
         binding.btnSimpan.setOnClickListener {
 
-            val lokasiGabung = listOf(
-                binding.etLokasi1.text.toString(),
-                binding.etLokasi2.text.toString()
-            ).filter { it.isNotBlank() }
-                .joinToString(", ")
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+            val nama = binding.etNama.text.toString()
+            val alamatManual = binding.etLokasi1.text.toString().trim()
+            val latLngManual = binding.etLokasi2.text.toString().trim()
 
-            val settings = UserSettings(
-                uid = uid,
-                namaDisplay = binding.etNama.text.toString(),
-                lokasiDefault = lokasiGabung,
-                gunakanTanggalManual = selectedDate != null,
-                tanggalManual = selectedDate,
-                gunakanWaktuManual = selectedTime != null,
-                waktuManual = selectedTime
-            )
+            if (alamatManual.isNotBlank() && latLngManual.isNotBlank()) {
+                Toast.makeText(requireContext(),
+                    "Isi salah satu: Alamat ATAU LatLng saja",
+                    Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
-            SettingsRepository.saveOrUpdateSettings(
-                settings,
-                onSuccess = {
-                    Toast.makeText(
-                        requireContext(),
-                        "Pengaturan disimpan",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                onError = {
-                    Toast.makeText(
-                        requireContext(),
-                        "Gagal menyimpan pengaturan",
-                        Toast.LENGTH_LONG
-                    ).show()
+            fun save(alamatFinal: String?, latlngFinal: String?) {
+                val settings = UserSettings(
+                    uid = uid,
+                    namaDisplay = nama,
+                    alamatText = alamatFinal,
+                    latLngManual = latlngFinal,
+                    gunakanTanggalManual = selectedDate != null,
+                    tanggalManual = selectedDate,
+                    gunakanWaktuManual = selectedTime != null,
+                    waktuManual = selectedTime
+                )
+
+                SettingsRepository.saveOrUpdateSettings(settings,
+                    {
+                        Toast.makeText(requireContext(),"Pengaturan disimpan",Toast.LENGTH_SHORT).show()
+                        applySettings(settings) // 🔥 update UI langsung
+                    },
+                    {
+                        Toast.makeText(requireContext(),"Gagal menyimpan",Toast.LENGTH_LONG).show()
+                    }
+                )
+            }
+
+            // ===== USER ISI LATLNG =====
+            if (latLngManual.isNotBlank()) {
+                latLngToAddress(latLngManual) { autoAddress ->
+                    binding.etLokasi1.setText(autoAddress ?: "")
+                    save(autoAddress, latLngManual)
                 }
-            )
+                return@setOnClickListener
+            }
+
+            // ===== USER ISI ALAMAT =====
+            if (alamatManual.isNotBlank()) {
+                addressToLatLng(alamatManual) { autoLatLng ->
+                    binding.etLokasi2.setText(autoLatLng ?: "")
+                    save(alamatManual, autoLatLng)
+                }
+                return@setOnClickListener
+            }
+
+            // ===== TANPA LOKASI =====
+            save(null, null)
         }
 
         // ===== RESET (KECUALI NAMA) =====
         binding.btnReset.setOnClickListener {
 
-            // 🔹 reset lokasi
+            FirebaseFirestore.getInstance().collection("users").document(uid).get()
+                .addOnSuccessListener {
+                    val defaultName = it.getString("nama") ?: "User"
+                    binding.etNama.setText(defaultName)
+                }
+
             binding.etLokasi1.setText("")
             binding.etLokasi2.setText("")
-
-            // 🔹 reset tanggal
             selectedDate = null
-            binding.btnTanggal.text = "Ubah Tanggal"
-
-            // 🔹 reset waktu
             selectedTime = null
+            binding.btnTanggal.text = "Ubah Tanggal"
             binding.btnWaktu.text = "Ubah Waktu"
 
-            Toast.makeText(
-                requireContext(),
-                "Pengaturan tanggal, waktu, dan lokasi direset",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(),
+                "Semua pengaturan direset",
+                Toast.LENGTH_SHORT).show()
         }
 
     }
 
+    private fun addressToLatLng(address: String, callback: (String?) -> Unit) {
+        try {
+            val geo = android.location.Geocoder(requireContext(), Locale("id","ID"))
+            val list = geo.getFromLocationName(address, 1)
+            if (!list.isNullOrEmpty()) {
+                val l = list[0]
+                callback(String.format(Locale.US, "%.6f, %.6f", l.latitude, l.longitude))
+            } else callback(null)
+        } catch (e: Exception) {
+            callback(null)
+        }
+    }
 
+    private fun latLngToAddress(latlng: String, callback: (String?) -> Unit) {
+        try {
+            val parts = latlng.split(",")
+            if (parts.size != 2) return callback(null)
+
+            val lat = parts[0].trim().toDouble()
+            val lng = parts[1].trim().toDouble()
+
+            val geo = android.location.Geocoder(requireContext(), Locale("id","ID"))
+            val list = geo.getFromLocation(lat, lng, 1)
+
+            if (!list.isNullOrEmpty()) {
+                val a = list[0]
+                val address = listOf(
+                    a.thoroughfare,
+                    a.subLocality,
+                    a.locality,
+                    a.subAdminArea
+                ).filter { !it.isNullOrBlank() }.joinToString(", ")
+
+                callback(address)
+            } else callback(null)
+
+        } catch (e: Exception) {
+            callback(null)
+        }
+    }
+    private fun ensureDefaultName(uid: String) {
+        SettingsRepository.getSettings(uid, { s ->
+            if (s?.namaDisplay.isNullOrBlank()) {
+                FirebaseFirestore.getInstance().collection("users").document(uid).get()
+                    .addOnSuccessListener {
+                        val defaultName = it.getString("nama") ?: "User"
+                        binding.etNama.setText(defaultName)
+                    }
+            }
+        }, {})
+    }
     private fun applySettings(s: UserSettings) {
-        binding.etNama.setText(s.namaDisplay)
 
-        // ===== LOKASI =====
-        val lokasi = s.lokasiDefault ?: ""
-        val parts = lokasi.split(",").map { it.trim() }
-        if (parts.isNotEmpty()) binding.etLokasi1.setText(parts[0])
-        if (parts.size > 1) binding.etLokasi2.setText(parts[1])
+        binding.etNama.setText(s.namaDisplay ?: "")
+        binding.etLokasi1.setText(s.alamatText ?: "")
+        binding.etLokasi2.setText(s.latLngManual ?: "")
 
-        // ===== TANGGAL =====
         if (s.gunakanTanggalManual && s.tanggalManual != null) {
             selectedDate = s.tanggalManual
             binding.btnTanggal.text =
-                dateFormat.format(s.tanggalManual.toDate())
+                SimpleDateFormat("dd MMM yyyy", Locale("id","ID"))
+                    .format(s.tanggalManual.toDate())
         } else {
-            binding.btnTanggal.text = "Ubah Tanggal"
             selectedDate = null
+            binding.btnTanggal.text = "Ubah Tanggal"
         }
 
-        // ===== WAKTU =====
         if (s.gunakanWaktuManual && !s.waktuManual.isNullOrBlank()) {
             selectedTime = s.waktuManual
             binding.btnWaktu.text = s.waktuManual
         } else {
-            binding.btnWaktu.text = "Ubah Waktu"
             selectedTime = null
+            binding.btnWaktu.text = "Ubah Waktu"
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        SettingsRepository.getSettings(uid,
+            { it?.let { s -> applySettings(s) } },
+            {}
+        )
     }
 }

@@ -49,7 +49,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 val profile = UserProfile(
                     uid = uid,
                     nama = nama,
-                    email = email
+                    email = email,
+                    createdAt = com.google.firebase.Timestamp.now() // 🔥 INI
                 )
 
                 UserRepository.createUserProfile(profile) { success ->

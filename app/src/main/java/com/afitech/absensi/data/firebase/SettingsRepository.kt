@@ -19,14 +19,27 @@ object SettingsRepository {
             .document(uid)
             .get()
             .addOnSuccessListener { doc ->
-                if (doc.exists()) {
-                    onSuccess(doc.toObject(UserSettings::class.java))
-                } else {
-                    onSuccess(null) // belum pernah set
+                if (!doc.exists()) {
+                    onSuccess(null)
+                    return@addOnSuccessListener
                 }
+
+                val settings = UserSettings(
+                    uid = uid,
+                    namaDisplay = doc.getString("namaDisplay"),
+                    alamatText = doc.getString("alamatText"),       // ✅ FIX
+                    latLngManual = doc.getString("latLngManual"),   // ✅ FIX
+                    gunakanTanggalManual = doc.getBoolean("gunakanTanggalManual") ?: false,
+                    tanggalManual = doc.getTimestamp("tanggalManual"),
+                    gunakanWaktuManual = doc.getBoolean("gunakanWaktuManual") ?: false,
+                    waktuManual = doc.getString("waktuManual"),
+                    updatedAt = doc.getTimestamp("updatedAt")
+                )
+
+                onSuccess(settings)
             }
             .addOnFailureListener { e ->
-                Log.e("SETTINGS_SAVE", "ERROR", e)
+                Log.e("SETTINGS_GET", "ERROR", e)
                 onError(e)
             }
     }
@@ -40,11 +53,16 @@ object SettingsRepository {
         val data = hashMapOf(
             "uid" to settings.uid,
             "namaDisplay" to settings.namaDisplay,
-            "lokasiDefault" to settings.lokasiDefault,
+
+            // 🔥 INI YANG SEBELUMNYA HILANG
+            "alamatText" to settings.alamatText,
+            "latLngManual" to settings.latLngManual,
+
             "gunakanTanggalManual" to settings.gunakanTanggalManual,
             "tanggalManual" to settings.tanggalManual,
             "gunakanWaktuManual" to settings.gunakanWaktuManual,
             "waktuManual" to settings.waktuManual,
+
             "updatedAt" to FieldValue.serverTimestamp()
         )
 
@@ -52,6 +70,9 @@ object SettingsRepository {
             .document(settings.uid)
             .set(data)
             .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { e -> onError(e) }
+            .addOnFailureListener { e ->
+                Log.e("SETTINGS_SAVE", "ERROR", e)
+                onError(e)
+            }
     }
 }

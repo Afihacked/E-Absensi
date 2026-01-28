@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -66,6 +66,12 @@
             android:focusable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogleLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Masuk dengan Google"
+            app:icon="@drawable/ic_google"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
     </LinearLayout>
 </ScrollView>

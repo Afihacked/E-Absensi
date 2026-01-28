@@ -78,17 +78,16 @@ object FirestoreRepository {
                             is Long -> createdAtAny
                             else -> 0L
                         }
-
-                        Absensi(
-                            uid = doc.getString("uid") ?: "",
-                            nama = doc.getString("nama") ?: "",
-                            lokasi = doc.getString("lokasi") ?: "",
-                            latLng = doc.getString("latLng"),          // ✅ TAMBAHKAN
-                            photoLocal = doc.getBoolean("photoLocal") ?: false,
-                            photoCode = doc.getString("photoCode") ?: "", // opsional
-                            imageHash = doc.getString("imageHash") ?: "", // opsional
-                            createdAt = createdAtMillis
-                        )
+                                Absensi(
+                                    uid = doc.getString("uid") ?: "",
+                                    nama = doc.getString("nama") ?: "",
+                                    lokasi = doc.getString("lokasi") ?: "",
+                                    latLng = doc.getString("latLng"),
+                                    photoLocal = doc.getBoolean("photoLocal") ?: false,
+                                    photoCode = doc.getString("photoCode") ?: "",
+                                    imageHash = doc.getString("imageHash") ?: "",
+                                    createdAt = doc.getTimestamp("createdAt")   // ✅ FIX UTAMA
+                                )
                     } catch (e: Exception) {
                         null
                     }
@@ -136,7 +135,7 @@ object FirestoreRepository {
                             photoLocal = doc.getBoolean("photoLocal") ?: false,
                             photoCode = doc.getString("photoCode") ?: "", // opsional
                             imageHash = doc.getString("imageHash") ?: "", // opsional
-                            createdAt = createdAtMillis
+                            createdAt = doc.getTimestamp("createdAt")
                         )
                     } catch (e: Exception) {
                         null

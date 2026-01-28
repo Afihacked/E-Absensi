@@ -68,6 +68,7 @@ class VerifyPhotoFragment : Fragment(R.layout.fragment_verify_photo) {
             null
         }
     }
+
     private fun showValid(a: Absensi) {
 
         binding.tvStatus.text = "Foto Absensi Valid"
@@ -80,7 +81,7 @@ class VerifyPhotoFragment : Fragment(R.layout.fragment_verify_photo) {
         val waktu = SimpleDateFormat(
             "dd MMM yyyy HH:mm",
             Locale("id", "ID")
-        ).format(Date(a.createdAt))
+        ).format((a.createdAt?.toDate()?: Date()))
 
         binding.tvWaktu.text = "🕒 Waktu: $waktu"
 

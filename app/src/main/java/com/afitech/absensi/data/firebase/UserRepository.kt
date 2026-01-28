@@ -20,12 +20,30 @@ object UserRepository {
         onSuccess: (UserProfile?) -> Unit,
         onError: (Exception) -> Unit
     ) {
-        db.collection("users").document(uid)
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
             .get()
             .addOnSuccessListener { doc ->
-                onSuccess(doc.toObject(UserProfile::class.java))
+
+                if (!doc.exists()) {
+                    onSuccess(null)
+                    return@addOnSuccessListener
+                }
+
+                val profile = UserProfile(
+                    uid = doc.getString("uid") ?: "",
+                    nama = doc.getString("nama") ?: "",
+                    email = doc.getString("email") ?: "",
+                    role = doc.getString("role") ?: "user",
+                    createdAt = doc.getTimestamp("createdAt")
+                )
+
+                onSuccess(profile)
             }
-            .addOnFailureListener { onError(it) }
+            .addOnFailureListener { e ->
+                onError(e)
+            }
     }
 
     fun updateNama(

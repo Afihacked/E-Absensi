@@ -278,66 +278,64 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun updateInfoAbsensiUI() {
 
         val s = userSettings
-        val nama = s?.namaDisplay ?: "Nama User"
-        val alamatCustom = s?.lokasiDefault
 
-        val alamat =
-            if (!alamatCustom.isNullOrBlank())
-                alamatCustom
-            else
-                currentLocationAddress ?: "Lokasi tidak tersedia"
+        val nama = s?.namaDisplay ?: run {
+            val default = binding.tvUserName.text.toString()
+            if (default.isBlank()) "User" else default
+        }
+
+        val alamatManual = s?.alamatText
+        val latLngManual = s?.latLngManual
+
+        val alamatTampil = alamatManual ?: currentLocationAddress ?: "Lokasi tidak tersedia"
 
         val tanggalDate =
             if (s?.gunakanTanggalManual == true && s.tanggalManual != null)
                 s.tanggalManual.toDate()
-            else
-                Date()
+            else Date()
 
-        val tanggal = SimpleDateFormat(
-            "dd MMM yyyy",
-            Locale("id", "ID")
-        ).format(tanggalDate)
+        val tanggal = SimpleDateFormat("dd MMM yyyy", Locale("id", "ID")).format(tanggalDate)
 
         val jam =
             if (s?.gunakanWaktuManual == true && !s.waktuManual.isNullOrBlank())
                 s.waktuManual
-            else
-                SimpleDateFormat("HH:mm", Locale("id", "ID"))
-                    .format(Date())
+            else SimpleDateFormat("HH:mm", Locale("id", "ID")).format(Date())
 
         binding.tvInfoNama.text = "👤 Nama: $nama"
-        binding.tvInfoLokasi.text = "📍 Lokasi:\n$alamat"
+        binding.tvInfoLokasi.text = "📍 Lokasi:\n$alamatTampil"
         binding.tvInfoWaktu.text = "🕒 Waktu: $tanggal $jam"
 
-        // ================= KOORDINAT AUTO SINKRON =================
+        // ===== PRIORITAS LATLNG =====
+        when {
+            !latLngManual.isNullOrBlank() -> {
+                finalLatLngForWatermark = latLngManual
+                binding.tvInfoLatLng.text = latLngManual
+                binding.tvInfoLatLng.visibility = View.VISIBLE
+                setCopyLatLng(latLngManual)
+            }
 
-        if (!alamatCustom.isNullOrBlank()) {
-
-            // 🔥 PAKAI ALAMAT CUSTOM → GEOCODE
-            geocodeAddressToLatLng(alamatCustom) { latlng ->
-
-                finalLatLngForWatermark = latlng
-
-                if (!latlng.isNullOrBlank()) {
-                    binding.tvInfoLatLng.text = latlng
-                    binding.tvInfoLatLng.visibility = View.VISIBLE
-                    setCopyLatLng(latlng)
-                } else {
-                    binding.tvInfoLatLng.visibility = View.GONE
+            !alamatManual.isNullOrBlank() -> {
+                geocodeAddressToLatLng(alamatManual) { latlng ->
+                    finalLatLngForWatermark = latlng
+                    if (!latlng.isNullOrBlank()) {
+                        binding.tvInfoLatLng.text = latlng
+                        binding.tvInfoLatLng.visibility = View.VISIBLE
+                        setCopyLatLng(latlng)
+                    } else {
+                        binding.tvInfoLatLng.visibility = View.GONE
+                    }
                 }
             }
 
-        } else {
-
-            // 🔥 TANPA CUSTOM → GPS DEVICE
-            finalLatLngForWatermark = currentLocationLatLng
-
-            if (!currentLocationLatLng.isNullOrBlank()) {
-                binding.tvInfoLatLng.text = currentLocationLatLng
-                binding.tvInfoLatLng.visibility = View.VISIBLE
-                setCopyLatLng(currentLocationLatLng)
-            } else {
-                binding.tvInfoLatLng.visibility = View.GONE
+            else -> {
+                finalLatLngForWatermark = currentLocationLatLng
+                if (!currentLocationLatLng.isNullOrBlank()) {
+                    binding.tvInfoLatLng.text = currentLocationLatLng
+                    binding.tvInfoLatLng.visibility = View.VISIBLE
+                    setCopyLatLng(currentLocationLatLng)
+                } else {
+                    binding.tvInfoLatLng.visibility = View.GONE
+                }
             }
         }
     }
@@ -402,6 +400,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     // ================= SETTINGS =================
     private fun loadSettings() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         SettingsRepository.getSettings(
             uid,
             onSuccess = {
@@ -508,36 +507,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         bitmap: Bitmap,
         uri: Uri,
         photoCode: String,
-        imageHash: String,
-        alamatFinal: String,
-        latLngFinal: String?
+        imageHash: String
     ) {
 
         val finalUri: Uri = if (isFromGallery) {
-            saveBitmapToGallery(bitmap)
-                ?: run {
-                    Toast.makeText(requireContext(), "Gagal simpan foto", Toast.LENGTH_LONG).show()
-                    return
-                }
+            saveBitmapToGallery(bitmap) ?: return
         } else {
             overwriteOriginalImage(uri, bitmap)
             uri
         }
 
-        // 🔐 Tulis EXIF
         writeAbsensiExif(finalUri, photoCode)
 
-        // 🔥 SIMPAN FIRESTORE (SUDAH SINKRON)
+        val namaFinal = userSettings?.namaDisplay ?: binding.tvUserName.text.toString()
+        val alamatFinal = userSettings?.alamatText ?: currentLocationAddress ?: "Lokasi tidak tersedia"
+        val latLngFinal = userSettings?.latLngManual ?: currentLocationLatLng
+
         FirestoreRepository.saveAbsensi(
             Absensi(
                 uid = uid,
-                nama = userSettings?.namaDisplay ?: "Nama User",
+                nama = namaFinal,
                 lokasi = alamatFinal,
+                latLng = latLngFinal,
                 photoLocal = true,
                 photoCode = photoCode,
                 imageHash = imageHash,
-                latLng = latLngFinal,
-                createdAt = System.currentTimeMillis()
+                createdAt = com.google.firebase.Timestamp.now()
             ),
             onSuccess = {
                 Toast.makeText(requireContext(), "Absensi tersimpan", Toast.LENGTH_SHORT).show()
@@ -558,48 +553,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val photoCode = currentPhotoCode ?: return
         val imageHash = currentImageHash ?: return
 
-        val alamatCustom = userSettings?.lokasiDefault
-
-        FirestoreRepository.checkDuplicateAbsensi(
-            uid = uid,
-            imageHash = imageHash
-        ) { isDuplicate, reason ->
+        FirestoreRepository.checkDuplicateAbsensi(uid, imageHash) { isDuplicate, reason ->
 
             if (isDuplicate) {
                 Toast.makeText(requireContext(), "❌ $reason", Toast.LENGTH_LONG).show()
                 return@checkDuplicateAbsensi
             }
 
-            // 🔥 Tentukan sumber alamat & koordinat
-            if (!alamatCustom.isNullOrBlank()) {
-
-                // 📍 LATLNG DARI ALAMAT CUSTOM
-                geocodeAddressToLatLng(alamatCustom) { latlngFromAddress ->
-
-                    saveAbsensiFinal(
-                        uid = uid,
-                        bitmap = bitmap,
-                        uri = uri,
-                        photoCode = photoCode,
-                        imageHash = imageHash,
-                        alamatFinal = alamatCustom,
-                        latLngFinal = latlngFromAddress
-                    )
-                }
-
-            } else {
-
-                // 📍 LATLNG DARI GPS DEVICE
-                saveAbsensiFinal(
-                    uid = uid,
-                    bitmap = bitmap,
-                    uri = uri,
-                    photoCode = photoCode,
-                    imageHash = imageHash,
-                    alamatFinal = currentLocationAddress ?: "Lokasi tidak tersedia",
-                    latLngFinal = currentLocationLatLng
-                )
-            }
+            saveAbsensiFinal(uid, bitmap, uri, photoCode, imageHash)
         }
     }
 
@@ -655,17 +616,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun addWatermarkFromXml(photo: Bitmap): Bitmap {
 
         val s = userSettings
-        val nama = s?.namaDisplay ?: "Nama User"
 
-        val alamatCustom = s?.lokasiDefault
-
-        val alamat =
-            if (!alamatCustom.isNullOrBlank())
-                alamatCustom
-            else
-                currentLocationAddress ?: "Lokasi tidak tersedia"
-
-        // 🔥 KOORDINAT SUDAH DIHITUNG SEBELUMNYA
+        val nama = s?.namaDisplay ?: binding.tvUserName.text.toString()
+        val alamat = s?.alamatText ?: currentLocationAddress ?: "Lokasi tidak tersedia"
         val koordinat = finalLatLngForWatermark
 
         val tanggalDate =
@@ -673,15 +626,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 s.tanggalManual.toDate()
             else Date()
 
-        val tanggal = SimpleDateFormat("dd MMM yyyy", Locale("id", "ID"))
-            .format(tanggalDate)
+        val tanggal = SimpleDateFormat("dd MMM yyyy", Locale("id", "ID")).format(tanggalDate)
 
         val jam =
             if (s?.gunakanWaktuManual == true && !s.waktuManual.isNullOrBlank())
                 s.waktuManual
-            else
-                SimpleDateFormat("HH:mm", Locale("id", "ID"))
-                    .format(Date())
+            else SimpleDateFormat("HH:mm", Locale("id", "ID")).format(Date())
 
         val wmView = layoutInflater.inflate(R.layout.layout_watermark, null)
 
@@ -692,28 +642,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         wmView.findViewById<TextView>(R.id.tvWmAddress).text = alamat
 
         val tvLatLng = wmView.findViewById<TextView>(R.id.tvWmLatLng)
-
         if (!koordinat.isNullOrBlank()) {
             tvLatLng.text = koordinat
             tvLatLng.visibility = View.VISIBLE
         } else {
             tvLatLng.visibility = View.GONE
         }
-
         applyGradientToTimeDirect(tvTime)
-
-        val maxWmWidth = (photo.width * 0.85f).toInt()
-        val wmBitmap = viewToBitmapWithMaxWidth(wmView, maxWmWidth)
+        val wmBitmap = viewToBitmapWithMaxWidth(wmView, (photo.width * 0.85f).toInt())
 
         val result = photo.copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(result)
 
-        val safeMargin = photo.width * 0.01f
-        val left = safeMargin
-        val top = photo.height - wmBitmap.height - safeMargin
-        val safeTop = maxOf(safeMargin, top)
+        val margin = photo.width * 0.01f
+        val left = margin
+        val top = photo.height - wmBitmap.height - margin
 
-        canvas.drawBitmap(wmBitmap, left, safeTop, null)
+        canvas.drawBitmap(wmBitmap, left, maxOf(margin, top), null)
         return result
     }
 
@@ -939,6 +884,7 @@ private fun generateImageHash(bitmap: Bitmap): String {
     override fun onResume() {
         super.onResume()
         updateUserNameUI()
+        loadSettings()
     }
 
 }

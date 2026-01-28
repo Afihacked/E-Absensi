@@ -5,7 +5,7 @@ data class Absensi(
     val nama: String = "",
     val lokasi: String = "",
     val photoLocal: Boolean = true,
-    val createdAt: Long = 0L,
+    val createdAt: com.google.firebase.Timestamp? = null,
     val photoCode: String = "",
     val imageHash: String = "",
     val latLng: String? = null
