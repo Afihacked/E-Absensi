@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvNama"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:textSize="14sp"
             android:text="Nama User"/>
 
@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvLokasi"
+            android:fontFamily="@font/poppins_reguler"
             android:textSize="13sp"
             android:text="Lokasi"/>
 
@@ -31,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvWaktu"
+            android:fontFamily="@font/poppins_reguler"
             android:textSize="12sp"
             android:alpha="0.7"
             android:text="23 Jan 2026 - 08:00"/>

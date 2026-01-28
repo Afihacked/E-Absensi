@@ -13,45 +13,57 @@
         <TextView
             android:text="Login"
             android:textSize="26sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
             android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Email"
                 android:id="@+id/etEmail"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"/>
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Password"
                 android:id="@+id/etPassword"
+                android:fontFamily="@font/poppins_reguler"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"/>
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:text="Login"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"/>
 
         <TextView
             android:id="@+id/btnRegister"
-            android:text="Daftar Akun"
+            android:text="Belum Punya Akun ?"
             android:textColor="@color/primary"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true"
@@ -59,19 +71,39 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/btnForgot"
-            android:text="Lupa Password?"
+            android:text="Lupa Password ?"
+            android:fontFamily="@font/poppins_reguler"
             android:textColor="@color/primary"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:clickable="true"
             android:focusable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGoogleLogin"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Masuk dengan Google"
             app:icon="@drawable/ic_google"
             style="@style/Widget.Material3.Button.OutlinedButton"/>
+        <FrameLayout
+            android:id="@+id/loadingLayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loadingAnim"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                app:lottie_rawRes="@raw/loading"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
+        </FrameLayout>
     </LinearLayout>
+
 </ScrollView>

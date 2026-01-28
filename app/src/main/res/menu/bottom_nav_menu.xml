@@ -4,20 +4,24 @@
     <item
         android:id="@+id/homeFragment"
         android:title="Home"
+        android:fontFamily="@font/poppins_reguler"
         android:icon="@drawable/ic_home"/>
 
     <item
         android:id="@+id/historyFragment"
         android:title="History"
+        android:fontFamily="@font/poppins_reguler"
         android:icon="@drawable/ic_history"/>
 
     <item
         android:id="@+id/profileFragment"
         android:title="Profile"
+        android:fontFamily="@font/poppins_reguler"
         android:icon="@drawable/ic_user"/>
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
+        android:fontFamily="@font/poppins_reguler"
         android:title="Pengaturan" />
 
 

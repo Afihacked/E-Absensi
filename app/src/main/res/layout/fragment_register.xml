@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,29 +13,39 @@
         <TextView
             android:text="Daftar Akun"
             android:textSize="26sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
             android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Nama Lengkap"
                 android:id="@+id/etNama"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Email"
                 android:id="@+id/etEmail"
+                android:fontFamily="@font/poppins_reguler"
                 android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"/>
@@ -43,11 +53,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="Password"
                 android:id="@+id/etPassword"
+                android:fontFamily="@font/poppins_reguler"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"/>
@@ -56,6 +71,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:text="Daftar"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"/>

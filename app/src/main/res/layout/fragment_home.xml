@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Halo,"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_reguler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -29,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Nama User"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/tvGreeting"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,17 +57,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Informasi Absensi"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/tvInfoNama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_reguler"
                     android:text="👤 Nama: -"
                     android:textSize="14sp"/>
                 <TextView
                     android:id="@+id/tvInfoWaktu"
+                    android:fontFamily="@font/poppins_reguler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -74,6 +77,7 @@
                     android:textSize="14sp"/>
                 <TextView
                     android:id="@+id/tvInfoLokasi"
+                    android:fontFamily="@font/poppins_reguler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -158,6 +162,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCamera"
             android:layout_width="0dp"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Ambil Foto"
@@ -172,6 +177,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGallery"
             android:layout_width="0dp"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Pilih dari Galeri"
@@ -186,6 +192,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_reguler"
             android:alpha="0.7"
             android:text="Foto akan otomatis diberi watermark nama, waktu, dan lokasi."
             android:textSize="12sp"
@@ -198,6 +205,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_reguler"
             android:text="🔍 Verifikasi Foto Absensi"
             style="@style/Widget.Material3.Button.OutlinedButton"
             app:layout_constraintTop_toBottomOf="@id/tvNote"
@@ -209,8 +217,8 @@
             android:id="@+id/tvHistoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
             android:text="Riwayat Terakhir"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/btnVerifyPhoto"
@@ -240,6 +248,7 @@
                 android:id="@+id/rvHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_reguler"
                 android:padding="16dp"
                 android:nestedScrollingEnabled="false"/>
         </com.google.android.material.card.MaterialCardView>
@@ -249,6 +258,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lihat Semua"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/cardHistory"
             app:layout_constraintEnd_toEndOf="parent"/>

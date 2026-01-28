@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
@@ -54,6 +55,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     ).show()
                 }
                 .addOnFailureListener {
+                    showLoading(false)
                     Toast.makeText(requireContext(), "Email tidak terdaftar", Toast.LENGTH_SHORT).show()
                 }
         }
@@ -65,10 +67,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
         binding.btnGoogleLogin.setOnClickListener {
+            showLoading(true)
             val signInIntent = googleSignInClient.signInIntent
             googleLauncher.launch(signInIntent)
         }
-
+        binding.etPassword.doAfterTextChanged { text ->
+            val pass = text.toString()
+            if (pass.isEmpty()) {
+                binding.etPassword.error = null
+            } else if (!isPasswordValid(pass)) {
+                binding.etPassword.error =
+                    "Min 8 karakter, 1 huruf besar & 1 angka"
+            } else {
+                binding.etPassword.error = null
+            }
+        }
     }
     private val googleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -79,6 +92,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: Exception) {
+                showLoading(false)
                 Toast.makeText(requireContext(), "Login Google gagal", Toast.LENGTH_SHORT).show()
             }
         }
@@ -88,12 +102,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnSuccessListener { result ->
-
                 val user = result.user ?: return@addOnSuccessListener
                 finalizeGoogleUser(user)
-
             }
             .addOnFailureListener {
+                showLoading(false)
                 Toast.makeText(requireContext(), "Auth Firebase gagal", Toast.LENGTH_SHORT).show()
             }
     }
@@ -128,7 +141,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun goHome() {
-        findNavController().navigate(R.id.homeFragment)
+        showLoading(false)
+
+        findNavController().navigate(
+            R.id.homeFragment,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setEnterAnim(android.R.anim.fade_in)
+                .setExitAnim(android.R.anim.fade_out)
+                .build()
+        )
     }
     private fun doLogin() {
         val email = binding.etEmail.text.toString().trim()
@@ -139,6 +161,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             return
         }
 
+        if (!isPasswordValid(pass)) {
+            binding.etPassword.error =
+                "Password harus min 8 karakter, 1 huruf besar & 1 angka"
+            return
+        }
+
+        showLoading(true)
+
         FirebaseAuth.getInstance()
             .signInWithEmailAndPassword(email, pass)
             .addOnSuccessListener { result ->
@@ -147,6 +177,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 if (!user.isEmailVerified) {
                     FirebaseAuth.getInstance().signOut()
+                    showLoading(false)
                     Toast.makeText(
                         requireContext(),
                         "Verifikasi email dulu sebelum login",
@@ -158,6 +189,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loadUserProfile(user.uid)
             }
             .addOnFailureListener {
+                showLoading(false)
                 Toast.makeText(requireContext(), "Login gagal", Toast.LENGTH_SHORT).show()
             }
     }
@@ -179,5 +211,35 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
+    private fun showLoading(show: Boolean) {
+        if (show) {
+            binding.loadingLayer.alpha = 0f
+            binding.loadingLayer.visibility = View.VISIBLE
+            binding.loadingLayer.animate().alpha(1f).setDuration(200).start()
+
+            binding.loadingAnim.playAnimation()
+
+            binding.btnLogin.isEnabled = false
+            binding.btnGoogleLogin.isEnabled = false
+
+        } else {
+            binding.loadingAnim.cancelAnimation()
+
+            binding.loadingLayer.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    binding.loadingLayer.visibility = View.GONE
+                }
+                .start()
+
+            binding.btnLogin.isEnabled = true
+            binding.btnGoogleLogin.isEnabled = true
+        }
+    }
+    private fun isPasswordValid(password: String): Boolean {
+        val passwordRegex = Regex("^(?=.*[A-Z])(?=.*\\d).{8,}$")
+        return passwordRegex.matches(password)
+    }
 }
 

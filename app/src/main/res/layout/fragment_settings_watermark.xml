@@ -16,14 +16,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
             android:hint="Nama (Watermark)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNama"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -33,14 +34,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
             android:hint="Alamat">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLokasi1"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -48,14 +50,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusBottomEnd="20dp"
-            android:hint="LatLng">
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusBottomEnd="30dp"
+            android:hint="LatLng cth -7.005917, 109.530753">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLokasi2"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -66,13 +69,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tanggal absensi (opsional)"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:textSize="14sp"
             android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_reguler"
             android:text="Jika tidak dipilih, tanggal akan otomatis mengikuti sistem saat foto diambil."
             android:textSize="12sp"
             android:alpha="0.7"
@@ -91,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Waktu absensi (opsional)"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
             android:textSize="14sp"
             android:layout_marginTop="16dp"/>
 
@@ -100,6 +104,7 @@
             android:layout_height="wrap_content"
             android:text="Jika tidak dipilih, waktu akan otomatis mengikuti sistem saat foto diambil."
             android:textSize="12sp"
+            android:fontFamily="@font/poppins_reguler"
             android:alpha="0.7"
             android:layout_marginBottom="8dp"/>
 
@@ -123,6 +128,7 @@
                 android:id="@+id/btnReset"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
+                android:fontFamily="@font/poppins_reguler"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Reset"/>
@@ -133,6 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_marginStart="12dp"
+                android:fontFamily="@font/poppins_reguler"
                 android:text="Simpan Pengaturan"/>
 
         </LinearLayout>

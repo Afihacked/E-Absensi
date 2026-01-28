@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:text="Status"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#2E7D32"/>
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/primary"/>
 
         <TextView
             android:id="@+id/tvReason"
@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Ket : -"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_reguler"
             android:textColor="#C62828"
             android:layout_marginTop="4dp"/>
 
@@ -44,16 +45,19 @@
             android:id="@+id/tvNama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_marginTop="10dp"
             android:text="Nama:"/>
 
         <TextView
             android:id="@+id/tvLokasi"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lokasi:"/>
         <TextView
             android:id="@+id/tvLatLng"
+            android:fontFamily="@font/poppins_reguler"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Koordinat:"
@@ -64,12 +68,14 @@
             android:id="@+id/tvWaktu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_reguler"
             android:text="Waktu:"/>
 
         <TextView
             android:id="@+id/tvPhotoCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
             android:text="Photo Code:"
             android:textStyle="bold"
             android:layout_marginTop="8dp"/>

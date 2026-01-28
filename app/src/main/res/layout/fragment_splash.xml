@@ -17,7 +17,6 @@
     <TextView
         android:text="E-Absensi"
         android:textSize="28sp"
-        android:textStyle="bold"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/white"
         android:layout_marginTop="16dp"

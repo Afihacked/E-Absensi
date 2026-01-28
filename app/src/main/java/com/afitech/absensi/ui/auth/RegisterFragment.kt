@@ -3,6 +3,7 @@ package com.afitech.absensi.ui.auth
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
@@ -23,6 +24,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.btnRegister.setOnClickListener {
             doRegister()
         }
+        binding.etPassword.doAfterTextChanged { text ->
+            val pass = text.toString()
+            if (pass.isEmpty()) {
+                binding.etPassword.error = null
+            } else if (!isPasswordValid(pass)) {
+                binding.etPassword.error =
+                    "Min 8 karakter, 1 huruf besar & 1 angka"
+            } else {
+                binding.etPassword.error = null
+            }
+        }
     }
 
     private fun doRegister() {
@@ -30,8 +42,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val email = binding.etEmail.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
 
-        if (nama.isBlank() || email.isBlank() || pass.length < 6) {
-            Toast.makeText(requireContext(), "Data belum valid", Toast.LENGTH_SHORT).show()
+        if (nama.isBlank() || email.isBlank() || pass.isBlank()) {
+            Toast.makeText(requireContext(), "Data belum lengkap", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!isPasswordValid(pass)) {
+            binding.etPassword.error =
+                "Password harus min 8 karakter, 1 huruf besar & 1 angka"
             return
         }
 
@@ -84,6 +102,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+    private fun isPasswordValid(password: String): Boolean {
+        val passwordRegex = Regex("^(?=.*[A-Z])(?=.*\\d).{8,}$")
+        return passwordRegex.matches(password)
     }
 }
 

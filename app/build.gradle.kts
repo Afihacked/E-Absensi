@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
     id ("androidx.navigation.safeargs.kotlin")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -75,5 +76,7 @@ android {
         implementation("androidx.exifinterface:exifinterface:1.3.7")
         implementation("com.google.android.gms:play-services-auth:21.0.0")
         implementation("com.airbnb.android:lottie:6.7.1")
+        implementation ("com.github.bumptech.glide:glide:4.16.0")
+        kapt ("com.github.bumptech.glide:compiler:4.16.0")
     }
 }

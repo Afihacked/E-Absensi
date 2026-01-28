@@ -81,6 +81,9 @@
             android:name="imageUri"
             app:argType="string" />
     </fragment>
-
+    <fragment
+        android:id="@+id/avatarPreviewFragment"
+        android:name="com.afitech.absensi.ui.profile.AvatarPreviewFragment"
+        android:label="Avatar Preview"/>
 
 </navigation>

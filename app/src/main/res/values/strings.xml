@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">E-Absensi</string>
 
-    <string name="default_web_client_id">
-ISI DARI google-services.json → client → oauth_client → client_id type 3
-</string>
+    <string name="default_web_client_id">257127029021-kml4798qn2ovsqvd09kmb2qla0r8b7uq.apps.googleusercontent.com</string>
 </resources>

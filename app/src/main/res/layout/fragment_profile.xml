@@ -34,7 +34,6 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:src="@drawable/ic_user_avatar"
-                app:tint="@color/primary"
                 app:shapeAppearanceOverlay="@style/CircleImage"
                 android:scaleType="centerCrop"/>
 
@@ -43,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_gravity="center"
                 android:gravity="center_vertical"
                 android:layout_marginTop="16dp">
 
@@ -54,7 +54,19 @@
                     android:textColor="?attr/colorOnSurface"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tvSimpan"
+                    android:text="Simpan"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
                 <ImageView
                     android:id="@+id/btnEdit"
                     android:layout_width="20dp"
@@ -63,6 +75,7 @@
                     android:contentDescription="avatar"
                     android:src="@drawable/ic_edit"
                     app:tint="?attr/colorPrimary"/>
+</LinearLayout>
             </LinearLayout>
 
             <!-- EDIT MODE FIELD (hidden by default) -->
@@ -70,17 +83,17 @@
                 android:id="@+id/layoutEdit"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusBottomEnd="30dp"
                 android:visibility="gone"
                 android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNameEdit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- EMAIL -->
