@@ -9,8 +9,25 @@
 
 📲 Download Aplikasi
 
-⬇ Unduh versi terbaru di sini:
-👉 Download Latest Release
+<p align="center">
+  <a href="https://github.com/Afihacked/AfitechTok/releases">
+    <img src="https://img.shields.io/github/v/release/E-Absensi/E-Absensi?color=brightgreen&label=versi" alt="Release Version">
+  </a>
+  <a href="https://github.com/Afihacked/E-Absensi/issues">
+    <img src="https://img.shields.io/github/issues/Afihacked/E-Absensi?color=yellow" alt="Issues">
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/github/stars/Afihacked/E-Absensi?color=orange" alt="Stars">
+  </a>
+  <img src="https://img.shields.io/badge/Made%20with-Kotlin-blue?logo=kotlin" alt="Kotlin Badge">
+  <img src="https://img.shields.io/github/license/Afihacked/E-Absensi?color=blue" alt="License Badge">
+</p>
+
+<p align="center">
+  <a href="https://github.com/Afihacked/E-Absensi/releases/latest/download/E-Absensi_v1.0.0.apk">
+    <img src="https://img.shields.io/badge/⬇️_Download-APK-blue?style=for-the-badge&logo=android" alt="Download APK">
+  </a>
+</p>
 
 
 ---
