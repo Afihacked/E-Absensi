@@ -10,7 +10,7 @@
 📲 Download Aplikasi
 
 <p align="center">
-  <a href="https://github.com/Afihacked/AfitechTok/releases">
+  <a href="https://github.com/Afihacked/E-Absensi/releases">
     <img src="https://img.shields.io/github/v/release/E-Absensi/E-Absensi?color=brightgreen&label=versi" alt="Release Version">
   </a>
   <a href="https://github.com/Afihacked/E-Absensi/issues">
