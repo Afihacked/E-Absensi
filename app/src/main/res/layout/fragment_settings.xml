@@ -1,131 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:layout_marginTop="15dp"
+    android:background="?attr/colorSurface"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <!-- NAMA -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nama (Watermark)">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNama"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- LOKASI -->
-        <!-- LOKASI -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Alamat">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLokasi1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="LatLng">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLokasi2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- INFO TANGGAL -->
+        <!-- TITLE -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tanggal absensi (opsional)"
+            android:text="Pengaturan"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"/>
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginBottom="20dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jika tidak dipilih, tanggal akan otomatis mengikuti sistem saat foto diambil."
-            android:textSize="12sp"
-            android:alpha="0.7"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTanggal"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="Pilih Tanggal"
+        <!-- ===== WATERMARK BLOCK ===== -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardWatermark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            app:cardCornerRadius="18dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
 
-        <!-- INFO WAKTU -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Waktu absensi (opsional)"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jika tidak dipilih, waktu akan otomatis mengikuti sistem saat foto diambil."
-            android:textSize="12sp"
-            android:alpha="0.7"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnWaktu"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="Pilih Waktu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-
-        <!-- ACTION BUTTON -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReset"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reset"/>
+                android:orientation="horizontal"
+                android:padding="18dp"
+                android:gravity="center_vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSimpan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginStart="12dp"
-                android:text="Simpan Pengaturan"/>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_watermark"
+                    app:tint="?attr/colorPrimary"/>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
 
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Custom Watermark"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="Atur nama, alamat, koordinat, waktu"
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 </ScrollView>

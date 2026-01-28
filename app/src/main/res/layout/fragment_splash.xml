@@ -1,18 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lottie="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/primary"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@mipmap/ic_launcher" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLogo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        lottie:lottie_rawRes="@raw/logo_splash"
+        lottie:lottie_autoPlay="true"
+        lottie:lottie_loop="false" />
 
     <TextView
         android:text="E-Absensi"
-        android:textSize="20sp"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

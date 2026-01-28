@@ -1,38 +1,98 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_marginTop="10dp">
+    android:background="?attr/colorSurface">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profil User"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
-
-    <EditText
-        android:id="@+id/etNama"
+    <!-- TOP APP BAR -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarProfile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nama Tampilan"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:title="Profil"
+        app:titleCentered="true"
+        android:layout_marginTop="10dp"
+        app:menu="@menu/menu_profile" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Simpan"
-        android:layout_marginTop="24dp"/>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
-        android:text="Logout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#009688"
-        android:textColor="@android:color/white"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="32dp">
+
+            <!-- AVATAR -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/ic_user_avatar"
+                app:tint="@color/primary"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                android:scaleType="centerCrop"/>
+
+            <!-- NAME + EDIT -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:text="Nama User"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/btnEdit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="avatar"
+                    android:src="@drawable/ic_edit"
+                    app:tint="?attr/colorPrimary"/>
+            </LinearLayout>
+
+            <!-- EDIT MODE FIELD (hidden by default) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutEdit"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusBottomEnd="20dp"
+                android:visibility="gone"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- EMAIL -->
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="email@gmail.com"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:layout_marginTop="6dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

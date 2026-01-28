@@ -1,5 +1,7 @@
 <resources>
-    <color name="primary">#53F1BF</color>
-    <color name="secondary">#81C784</color>
+    <color name="primary">#00BD80</color>
+    <color name="secondary">#22A279</color>
     <color name="background">#121212</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>
