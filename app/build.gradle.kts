@@ -17,22 +17,45 @@ android {
         minSdk = 29
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // 🔥 DEBUG pakai nama biasa
+        manifestPlaceholders["appLabel"] = "E-Absensi"
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+
+            // 🔥 AUTO TAMBAH VERSI KE NAMA APP
+            manifestPlaceholders["appLabel"] = "E-Absensi v${defaultConfig.versionName}"
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
 
+        debug {
+            manifestPlaceholders["appLabel"] = "E-Absensi (Debug)"
+        }
     }
+    applicationVariants.all {
+        outputs.all {
+
+            val appName = "E-Absensi"
+            val versionName = defaultConfig.versionName
+            val buildTypeName = buildType.name
+
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
+                .outputFileName = "${appName}_v${versionName}_${buildTypeName}.apk"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -44,6 +67,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
     dependencies {
         // Core
         implementation(libs.androidx.core.ktx)
