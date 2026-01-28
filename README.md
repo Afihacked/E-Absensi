@@ -1,7 +1,7 @@
 🚀 Afitech E‑Absensi Android
 
 <p align="center">
-  <img src="app/src/main/res/mipmap/ic_launcher.png" width="120" alt="E-Absensi App Icon" />
+  <img src="https://raw.githubusercontent.com/Afihacked/AfitechTok/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" alt="AfitechTok Logo" width="120" height="120" />
 </p>Aplikasi absensi berbasis foto dengan sistem verifikasi keamanan menggunakan watermark terenkripsi, Photo Code, dan validasi database Firebase.
 
 
