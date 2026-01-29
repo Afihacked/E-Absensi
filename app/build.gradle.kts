@@ -31,9 +31,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            // 🔥 AUTO TAMBAH VERSI KE NAMA APP
-            manifestPlaceholders["appLabel"] = "E-Absensi v${defaultConfig.versionName}"
-
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
