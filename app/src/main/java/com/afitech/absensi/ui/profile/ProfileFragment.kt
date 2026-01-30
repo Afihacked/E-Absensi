@@ -9,7 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.UserRepository
 import com.afitech.absensi.databinding.FragmentProfileBinding
+import com.afitech.absensi.utils.ads.BannerController
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,7 +28,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
-
+        val adView = view.findViewById<AdView>(R.id.adView)
+        BannerController.attach(adView)
         setupGoogleClient()
         setupToolbar()
         loadProfile()

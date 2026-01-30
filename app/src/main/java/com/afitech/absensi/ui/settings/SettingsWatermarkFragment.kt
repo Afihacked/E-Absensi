@@ -10,6 +10,9 @@ import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.SettingsRepository
 import com.afitech.absensi.data.model.UserSettings
 import com.afitech.absensi.databinding.FragmentSettingsWatermarkBinding
+import com.afitech.absensi.utils.ads.BannerController
+import com.afitech.absensi.utils.ads.RewardController
+import com.google.android.gms.ads.AdView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,13 +27,17 @@ class SettingsWatermarkFragment : Fragment(R.layout.fragment_settings_watermark)
     private var selectedDate: Timestamp? = null
     private var selectedTime: String? = null
 
+    private lateinit var rewardAd: RewardController
     private val dateFormat =
         SimpleDateFormat("dd MMM yyyy", Locale("id", "ID"))
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSettingsWatermarkBinding.bind(view)
-
+        val adView = view.findViewById<AdView>(R.id.adView)
+        BannerController.attach(adView)
+        rewardAd = RewardController(requireContext())
+        rewardAd.load()
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         ensureDefaultName(uid)
         // 🔥 WAJIB: tampilkan tombol (XML default = gone)
@@ -114,14 +121,19 @@ class SettingsWatermarkFragment : Fragment(R.layout.fragment_settings_watermark)
                 SettingsRepository.saveOrUpdateSettings(settings,
                     {
                         Toast.makeText(requireContext(),"Pengaturan disimpan",Toast.LENGTH_SHORT).show()
-                        applySettings(settings) // 🔥 update UI langsung
+                        applySettings(settings)
+
+                        // 🎁 Reward muncul SETELAH toast sukses
+                        rewardAd.show(requireActivity()) { }
                     },
                     {
                         Toast.makeText(requireContext(),"Gagal menyimpan",Toast.LENGTH_LONG).show()
+
+                        // 🎁 Reward juga muncul walau gagal
+                        rewardAd.show(requireActivity()) { }
                     }
                 )
             }
-
             // ===== USER ISI LATLNG =====
             if (latLngManual.isNotBlank()) {
                 latLngToAddress(latLngManual) { autoAddress ->

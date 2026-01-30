@@ -8,6 +8,8 @@ import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.FirestoreRepository
 import com.afitech.absensi.databinding.FragmentHistoryBinding
 import com.afitech.absensi.ui.history.AbsensiAdapter
+import com.afitech.absensi.utils.ads.BannerController
+import com.google.android.gms.ads.AdView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -20,7 +22,8 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHistoryBinding.bind(view)
-
+        val adView = view.findViewById<AdView>(R.id.adView)
+        BannerController.attach(adView)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter

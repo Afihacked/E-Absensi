@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">E-Absensi</string>
-
     <string name="default_web_client_id">257127029021-kml4798qn2ovsqvd09kmb2qla0r8b7uq.apps.googleusercontent.com</string>
+    <string name="admob_banner_unit_id">ca-app-pub-ca-app-pub-2480965620056986/4121460132</string>
 </resources>

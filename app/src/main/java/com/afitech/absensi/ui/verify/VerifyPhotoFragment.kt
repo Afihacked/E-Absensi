@@ -9,6 +9,8 @@ import com.afitech.absensi.R
 import com.afitech.absensi.data.firebase.FirestoreRepository
 import com.afitech.absensi.data.model.Absensi
 import com.afitech.absensi.databinding.FragmentVerifyPhotoBinding
+import com.afitech.absensi.utils.ads.BannerController
+import com.google.android.gms.ads.AdView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +21,8 @@ class VerifyPhotoFragment : Fragment(R.layout.fragment_verify_photo) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVerifyPhotoBinding.bind(view)
-
+        val adView = view.findViewById<AdView>(R.id.adView)
+        BannerController.attach(adView)
         val uri = requireArguments().getString("imageUri")!!.toUri()
 
 

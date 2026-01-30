@@ -1,84 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:layout_marginTop="15dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <!-- ================= CONTENT ================= -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bannerContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- STATUS -->
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_bold"
-            android:textColor="@color/primary"/>
-
-        <TextView
-            android:id="@+id/tvReason"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ket : -"
-            android:textSize="14sp"
-            android:fontFamily="@font/poppins_reguler"
-            android:textColor="#C62828"
-            android:layout_marginTop="4dp"/>
-
-        <!-- FOTO -->
-        <ImageView
-            android:id="@+id/imgPhoto"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"/>
+            android:orientation="vertical">
 
-        <!-- DETAIL -->
-        <TextView
-            android:id="@+id/tvNama"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_reguler"
-            android:layout_marginTop="10dp"
-            android:text="Nama:"/>
+            <!-- STATUS -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/primary"/>
 
-        <TextView
-            android:id="@+id/tvLokasi"
-            android:fontFamily="@font/poppins_reguler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lokasi:"/>
-        <TextView
-            android:id="@+id/tvLatLng"
-            android:fontFamily="@font/poppins_reguler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Koordinat:"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ket : -"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_reguler"
+                android:textColor="#C62828"
+                android:layout_marginTop="4dp"/>
 
+            <!-- FOTO -->
+            <ImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
 
-        <TextView
-            android:id="@+id/tvWaktu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_reguler"
-            android:text="Waktu:"/>
+            <!-- DETAIL -->
+            <TextView
+                android:id="@+id/tvNama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_reguler"
+                android:layout_marginTop="10dp"
+                android:text="Nama:"/>
 
-        <TextView
-            android:id="@+id/tvPhotoCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Photo Code:"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"/>
+            <TextView
+                android:id="@+id/tvLokasi"
+                android:fontFamily="@font/poppins_reguler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lokasi:"/>
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/tvLatLng"
+                android:fontFamily="@font/poppins_reguler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Koordinat:"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvWaktu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_reguler"
+                android:text="Waktu:"/>
+
+            <TextView
+                android:id="@+id/tvPhotoCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Photo Code:"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ================= BANNER IKLAN ================= -->
+    <include
+        android:id="@+id/bannerContainer"
+        layout="@layout/layout_ad_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,14 @@ android {
     compileSdk {
         version = release(36)
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore/E-Absensi.jks")
+            storePassword = "qwerty"
+            keyAlias = "afitech"
+            keyPassword = "qwerty"
+        }
+    }
     defaultConfig {
         applicationId = "com.afitech.absensi"
         minSdk = 29
@@ -30,7 +37,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -99,5 +106,6 @@ android {
         implementation("com.airbnb.android:lottie:6.7.1")
         implementation ("com.github.bumptech.glide:glide:4.16.0")
         kapt ("com.github.bumptech.glide:compiler:4.16.0")
+        implementation("com.google.android.gms:play-services-ads:23.1.0")
     }
 }

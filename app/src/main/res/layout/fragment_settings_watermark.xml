@@ -1,149 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:layout_marginTop="15dp"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <!-- ================= SCROLL CONTENT ================= -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:layout_marginTop="15dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bannerContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- NAMA -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            android:hint="Nama (Watermark)">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNama"
-                android:fontFamily="@font/poppins_reguler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- LOKASI -->
-        <!-- LOKASI -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            android:hint="Alamat">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLokasi1"
-                android:fontFamily="@font/poppins_reguler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            android:hint="LatLng cth -7.005917, 109.530753">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLokasi2"
-                android:fontFamily="@font/poppins_reguler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- INFO TANGGAL -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tanggal absensi (opsional)"
-            android:fontFamily="@font/poppins_bold"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_reguler"
-            android:text="Jika tidak dipilih, tanggal akan otomatis mengikuti sistem saat foto diambil."
-            android:textSize="12sp"
-            android:alpha="0.7"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTanggal"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="Pilih Tanggal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <!-- INFO WAKTU -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Waktu absensi (opsional)"
-            android:fontFamily="@font/poppins_bold"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jika tidak dipilih, waktu akan otomatis mengikuti sistem saat foto diambil."
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_reguler"
-            android:alpha="0.7"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnWaktu"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="Pilih Waktu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-
-        <!-- ACTION BUTTON -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp">
+            android:orientation="vertical">
+
+            <!-- NAMA -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusBottomEnd="30dp"
+                android:hint="Nama (Watermark)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNama"
+                    android:fontFamily="@font/poppins_reguler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- LOKASI -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusBottomEnd="30dp"
+                android:hint="Alamat Lengkap">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLokasi1"
+                    android:fontFamily="@font/poppins_reguler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusBottomEnd="30dp"
+                android:hint="Koordinat cth -7.005917, 109.530753">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLokasi2"
+                    android:fontFamily="@font/poppins_reguler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*Silakan isi salah satu: Alamat atau Koordinat (LatLng). Tidak dapat diisi bersamaan."
+                android:fontFamily="@font/poppins_reguler"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+            <!-- INFO TANGGAL -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tanggal absensi (opsional)"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_reguler"
+                android:text="Jika tidak dipilih, tanggal akan otomatis mengikuti sistem saat foto diambil."
+                android:textSize="12sp"
+                android:alpha="0.7"
+                android:layout_marginBottom="8dp"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReset"
+                android:id="@+id/btnTanggal"
                 style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:fontFamily="@font/poppins_reguler"
+                android:text="Pilih Tanggal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reset"/>
+                android:visibility="gone"/>
+
+            <!-- INFO WAKTU -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Waktu absensi (opsional)"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jika tidak dipilih, waktu akan otomatis mengikuti sistem saat foto diambil."
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_reguler"
+                android:alpha="0.7"
+                android:layout_marginBottom="8dp"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSimpan"
-                android:layout_width="0dp"
+                android:id="@+id/btnWaktu"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:text="Pilih Waktu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginStart="12dp"
-                android:fontFamily="@font/poppins_reguler"
-                android:text="Simpan Pengaturan"/>
+                android:visibility="gone"/>
+
+            <!-- ACTION BUTTON -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnReset"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_reguler"
+                    android:text="Reset"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSimpan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/poppins_reguler"
+                    android:text="Simpan Pengaturan"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
 
+    <!-- ================= BANNER IKLAN ================= -->
+    <include
+        android:id="@+id/bannerContainer"
+        layout="@layout/layout_ad_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

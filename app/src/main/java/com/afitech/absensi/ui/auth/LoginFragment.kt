@@ -1,6 +1,7 @@
 package com.afitech.absensi.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +25,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val TAG = "GOOGLE_LOGIN_DEBUG"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,6 +69,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
         binding.btnGoogleLogin.setOnClickListener {
+            Log.d(TAG, "Google button clicked")
             showLoading(true)
             val signInIntent = googleSignInClient.signInIntent
             googleLauncher.launch(signInIntent)
@@ -86,40 +89,63 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val googleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
+            Log.d(TAG, "Google activity result code = ${result.resultCode}")
+
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 
             try {
                 val account = task.getResult(ApiException::class.java)
+
+                Log.d(TAG, "Google account email = ${account.email}")
+                Log.d(TAG, "Google ID TOKEN = ${account.idToken}")
+                Log.d(TAG, "Google display name = ${account.displayName}")
+
+                if (account.idToken == null) {
+                    Log.e(TAG, "ID TOKEN NULL → Web Client ID salah / SHA mismatch")
+                    showLoading(false)
+                    return@registerForActivityResult
+                }
+
                 firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: Exception) {
+
+            } catch (e: ApiException) {
+                Log.e(TAG, "Google Sign-In FAILED code=${e.statusCode}", e)
                 showLoading(false)
                 Toast.makeText(requireContext(), "Login Google gagal", Toast.LENGTH_SHORT).show()
             }
         }
     private fun firebaseAuthWithGoogle(idToken: String) {
 
+        Log.d(TAG, "Send token to Firebase: ${idToken.take(25)}...")
+
         val credential = GoogleAuthProvider.getCredential(idToken, null)
 
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnSuccessListener { result ->
+                Log.d(TAG, "Firebase auth SUCCESS uid=${result.user?.uid}")
                 val user = result.user ?: return@addOnSuccessListener
                 finalizeGoogleUser(user)
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Firebase auth FAILED", e)
                 showLoading(false)
                 Toast.makeText(requireContext(), "Auth Firebase gagal", Toast.LENGTH_SHORT).show()
             }
     }
     private fun finalizeGoogleUser(user: com.google.firebase.auth.FirebaseUser) {
 
+        Log.d(TAG, "Finalize user uid=${user.uid}")
+
         val db = FirebaseFirestore.getInstance()
         val uid = user.uid
 
         db.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
+                Log.d(TAG, "Firestore doc exists = ${doc.exists()}")
 
                 if (!doc.exists()) {
-                    // 🔥 USER BARU SAJA PAKAI NAMA GOOGLE
+                    Log.d(TAG, "Creating new user profile")
+
                     val profile = hashMapOf(
                         "uid" to uid,
                         "nama" to (user.displayName ?: "User"),
@@ -131,12 +157,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     )
 
                     db.collection("users").document(uid).set(profile)
-                        .addOnSuccessListener { goHome() }
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Profile saved → goHome")
+                            goHome()
+                        }
 
                 } else {
-                    // 🔥 USER LAMA → JANGAN SENTUH NAMA LAGI
+                    Log.d(TAG, "Existing user → goHome")
                     goHome()
                 }
+            }
+            .addOnFailureListener {
+                Log.e(TAG, "Firestore read FAILED", it)
             }
     }
 
